@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# ================= DATA =================
+
 data = load_diabetes()
 X_train, X_test, y_train, y_test = train_test_split(
     data.data, data.target, test_size=0.2, random_state=2
@@ -16,7 +16,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 alphas = [0,1,2,4,8,16,32]
 
-# ================= RIDGE =================
+
 ridge_coefs, ridge_r2 = [], []
 for a in alphas:
     reg = Ridge(alpha=a)
@@ -24,7 +24,7 @@ for a in alphas:
     ridge_coefs.append(reg.coef_)
     ridge_r2.append(r2_score(y_test, reg.predict(X_test)))
 
-# ================= LASSO =================
+
 lasso_coefs, lasso_r2 = [], []
 for a in alphas:
     reg = Lasso(alpha=a, max_iter=5000)
@@ -32,7 +32,7 @@ for a in alphas:
     lasso_coefs.append(reg.coef_)
     lasso_r2.append(r2_score(y_test, reg.predict(X_test)))
 
-# ================= FIGURE =================
+
 fig, (ax1, ax2) = plt.subplots(
     1, 2, figsize=(10, 4), sharey=True
 )
@@ -50,7 +50,7 @@ ax2.set_title("Lasso")
 for ax in (ax1, ax2):
     ax.tick_params(axis='x', rotation=45)
 
-# ================= ANIMATION =================
+
 def update(frame):
     for bar, h in zip(bars_ridge, ridge_coefs[frame]):
         bar.set_height(h)
@@ -73,7 +73,6 @@ anim = FuncAnimation(
     interval=1200
 )
 
-# ================= SAVE GIF =================
 anim.save(
     "ridge_vs_lasso_compact.gif",
     writer=PillowWriter(fps=1)

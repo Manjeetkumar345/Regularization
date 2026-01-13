@@ -4,14 +4,10 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation, PillowWriter
 from sklearn.datasets import make_regression
 
-# -----------------------------
-# Dummy data (1D regression)
-# -----------------------------
+
 X,y = make_regression(n_samples=100, n_features=1, n_informative=1, n_targets=1,noise=20,random_state=13)
 X.shape,y.shape
-# -----------------------------
-# Loss functions
-# -----------------------------
+
 def ridge_loss(m, b, alpha):
     y_hat = m * X.ravel() + b
     return np.mean((y - y_hat) ** 2) + alpha * (m ** 2)
@@ -20,9 +16,6 @@ def lasso_loss(m, b, alpha):
     y_hat = m * X.ravel() + b
     return np.mean((y - y_hat) ** 2) + alpha * np.abs(m)
 
-# -----------------------------
-# Setup
-# -----------------------------
 m_vals = np.linspace(-45, 100, 100)
 alphas = [0,1,5,10,20,30,40,50,100]
 b = 2.29
@@ -43,9 +36,7 @@ ax2.set_ylabel("Loss")
 ridge_line, = ax1.plot([], [], lw=2)
 lasso_line, = ax2.plot([], [], lw=2)
 
-# -----------------------------
-# Animation update function
-# -----------------------------
+
 def update(frame):
     alpha = alphas[frame]
 
@@ -66,9 +57,8 @@ def update(frame):
 
     return ridge_line, lasso_line
 
-# -----------------------------
 # Create animation
-# -----------------------------
+
 anim = FuncAnimation(
     fig,
     update,
@@ -77,9 +67,6 @@ anim = FuncAnimation(
     blit=False
 )
 
-# -----------------------------
-# Save as GIF
-# -----------------------------
 anim.save(
     "ridge_vs_lasso_alpha_animation.gif",
     writer=PillowWriter(fps=1)
